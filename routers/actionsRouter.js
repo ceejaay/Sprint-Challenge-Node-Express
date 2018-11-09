@@ -13,6 +13,7 @@ router.get('/', (req, res) => {
   })
 })
 
+
 router.get('/:id', (req, res) => {
   actionDb.get(req.params.id)
     .then(action => {
@@ -26,11 +27,21 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
   const actionData = req.body
-    actionDb.insert(actionData).then(actionId => {
-      actionDb.get(actionId).then(newAction => {
+      actionDb.insert(actionData)
+      .then(newAction => {
         res.status(201).json(newAction)
       })
-    }).catch(err =>{ res.status(500).json({message: 'there was a problem adding an action'}) } )
+    .catch(err =>{ res.status(500).json({message: 'there was a problem adding an action'}) } )
+
+})
+
+router.put('/:id', (req, res) => {
+  const actionData = req.body
+      actionDb.update(req.params.id, actionData)
+      .then(action => {
+        res.status(201).json(action)
+      })
+    .catch(err =>{ res.status(500).json({message: 'there was a problem updating the action'}) } )
 
 })
 
